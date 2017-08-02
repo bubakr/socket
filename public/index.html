@@ -3,27 +3,39 @@
     <head>
         <meta charset="utf-8">
         <title>SOCKET</title>
+        <link rel="stylesheet" href="/css/style.css">
     </head>
-    <body>
-        <h1>SOCKET APP</h1>
+    <body class="chat">
+        <div class="chat__sidebar">
+            <h3>People</h3>
+            <div class="" id="users">
 
-        <p>Hello! welcome to our chat application</p>
+            </div>
+        </div>
+
+        <div class="chat__main">
+            <ol id="messages" class="chat__messages">
+
+            </ol>
+
+
+            <div class="chat__footer">
+                <form id="message-form">
+                    <input type="text" name="message" placeholder="Type new message" id="message" autofocus autocomplete="off">
+                    <br><br>
+                    <button type="submit" name="button">Send</button>
+                </form>
+                <button type="button"id="sendlocation">Share Location</button>
+            </div>
+        </div>
 
         <hr>
 
-        <ol id="messages">
 
-        </ol>
-
-
-        <form id="message-form">
-            <input type="text" name="message" placeholder="Type new message" id="message">
-            <br><br>
-            <button type="button"id="sendlocation">Share Location</button>
-        </form>
 
         <script type="text/javascript" src="/socket.io/socket.io.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://momentjs.com/downloads/moment.min.js"></script>
         <script type="text/javascript" src="/js/index.js"></script>
 
     </body>

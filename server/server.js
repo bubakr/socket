@@ -26,7 +26,7 @@ io.on('connection', (socket)=>{
             text: message.text,
             created: new Date().getTime()
         });
-        callback('This is from the server');
+        callback();
     });
 
     socket.on('shareLocation', (position)=>{

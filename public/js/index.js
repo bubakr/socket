@@ -10,18 +10,19 @@ socket.on('disconnect', function(){
 
 
 socket.on('newMessage', function(data){
-    console.log('New Message', data);
+    var fromatedtime = moment(data.createdAt).format('h:mm a');
     var li = $('<li></li>');
-    li.text(`${data.from} : ${data.text}`);
+    li.text(`${data.from} ${fromatedtime}: ${data.text}`);
     $('#messages').append(li);
 });
 
 socket.on('shareLocationMessage', function(message){
-    console.log(message);
+    var fromatedtime = moment(message.createdAt).format('h:mm a');
     var li = $('<li></li>');
+
     var a = $(`<a target="_blank" href>My current location</a>`);
     a.attr('href', message.url);
-    li.text(`${message.from} `);
+    li.text(`${message.from} ${fromatedtime}: `);
     li.append(a);
     console.log(li);
     $('#messages').append(li);
@@ -31,12 +32,15 @@ socket.on('shareLocationMessage', function(message){
 
 $('#message-form').on('submit', function(e){
     e.preventDefault();
+    var messageTextBox = $('[name=message]');
     socket.emit('createMessage', {
         from: 'User',
-        text: $('[name=message]').val()
+        text: messageTextBox.val()
     }, function(){
-
+        messageTextBox.val('');
+        messageTextBox.focus();
     });
+
 });
 
 var locationBtn = $('#sendlocation');
@@ -45,12 +49,21 @@ locationBtn.on('click', function (){
         return alert('Geolocation is not supported by your browser.')
     }
 
+    locationBtn.attr('disabled', 'disabled');
+    locationBtn.text('Fetching location ...');
+
     navigator.geolocation.getCurrentPosition( function(position){
+
         socket.emit('shareLocation', {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude
         });
+        locationBtn.removeAttr('disabled');
+        locationBtn.text('Share Location');
     }, function(){
         alert('Unable to fetch location');
+        locationBtn.removeAttr('disabled');
+        locationBtn.text('Fetching location ...');
+        locationBtn.text('Share Location');
     });
 });
