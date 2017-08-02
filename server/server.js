@@ -10,7 +10,7 @@ var app = express();
 var server = http.createServer(app);
 var io = socketIO(server);
 
-var {generateMessage} = require('./utils/message');
+var {generateMessage, generateLocationMessage} = require('./utils/message');
 
 io.on('connection', (socket)=>{
     console.log('new user connected');
@@ -27,12 +27,10 @@ io.on('connection', (socket)=>{
             created: new Date().getTime()
         });
         callback('This is from the server');
+    });
 
-        // socket.broadcast.emit('newMessage', {
-        //     from: message.from,
-        //     text: message.text,
-        //     created: new Date().getTime()
-        // });
+    socket.on('shareLocation', (position)=>{
+        io.emit('shareLocationMessage', generateLocationMessage('Admin', position.latitude, position.longitude));
     });
 
 
